@@ -19,6 +19,7 @@
         <project.reporting.outputEnconding>UTF-8</project.reporting.outputEnconding>
         <java.version>17</java.version>
         <jaxb.version>2.3.0</jaxb.version>
+        <jaxb.version>2.3.0</jaxb.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
