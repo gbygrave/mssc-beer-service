@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Service
+// @Service
 public class BeerInventoryServiceImpl implements BeerInventoryService {
     @Override
     public Integer getOnhandInventory(UUID beerId) {

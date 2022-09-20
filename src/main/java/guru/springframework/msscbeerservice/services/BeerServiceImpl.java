@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service("beerService")
+@Service
 public class BeerServiceImpl implements BeerService {
 
 
@@ -74,8 +74,13 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerDto getById(UUID beerId) {
-        return beerMapper.beerToBeerDto(beerRepository.findById(beerId).orElseThrow(NotFoundException::new));
+    public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
+        Beer beer = beerRepository.findById(beerId).orElseThrow(NotFoundException::new);
+        if (showInventoryOnHand) {
+            return beerMapper.beerToBeerDtoWithInventory(beer);
+        } else {
+            return beerMapper.beerToBeerDto(beer);
+        }
     }
 
     @Override
