@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
+// @Disabled
 @SpringBootTest
 class BeerInventoryServiceRestTemplateImplTest {
 
@@ -21,7 +21,7 @@ class BeerInventoryServiceRestTemplateImplTest {
     @BeforeEach
     void setUp() {}
 
-    @Test
+    // @Test
     void getOnhandInventory() {
         Integer qoh = beerInventoryService.getOnhandInventory(
                 UUID.fromString("0a818933-087d-47f2-ad83-2f986ed087eb"));
