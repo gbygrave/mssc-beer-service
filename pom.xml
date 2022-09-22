@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.sfg-beer-works</groupId>
-        <artifactId>sfg-beer-works-bom</artifactId>
-        <version>1.0.27</version>
+        <artifactId>sfg-brewery-bom</artifactId>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>mssc-beer-service</artifactId>
@@ -14,6 +14,7 @@
     <description>mssc-beer-service</description>
 
      <dependencies>
+         <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
@@ -42,5 +43,6 @@
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
         </dependency>
+        -->
     </dependencies>
 </project>
