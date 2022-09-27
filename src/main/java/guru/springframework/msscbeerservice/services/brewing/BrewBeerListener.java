@@ -11,6 +11,8 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import static guru.springframework.msscbeerservice.config.JmsConfig.BREWING_REQUEST_QUEUE;
 import static guru.springframework.msscbeerservice.config.JmsConfig.NEW_INVENTORY_QUEUE;
 
@@ -21,6 +23,7 @@ public class BrewBeerListener {
     private final BeerRepository beerRepository;
     private final JmsTemplate jmsTemplate;
 
+    @Transactional
     @JmsListener(destination = BREWING_REQUEST_QUEUE)
     public void listen(BrewBeerEvent event) {
         BeerDto beerDto = event.getBeerDto();
