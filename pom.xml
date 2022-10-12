@@ -13,4 +13,10 @@
     <name>mssc-beer-service</name>
     <description>mssc-beer-service</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+    </dependencies>
  </project>
