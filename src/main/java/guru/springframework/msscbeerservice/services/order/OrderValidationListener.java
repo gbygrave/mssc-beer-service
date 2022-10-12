@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import static guru.springframework.msscbeerservice.config.JmsConfig.VALIDATE_ORDER_QUEUE;
 import static guru.springframework.msscbeerservice.config.JmsConfig.VALIDATE_ORDER_RESULT_QUEUE;
 
 @Service
@@ -22,7 +23,7 @@ public class OrderValidationListener {
     private final JmsTemplate jmsTemplate;
 
     @Transactional
-    @JmsListener(destination = VALIDATE_ORDER_RESULT_QUEUE)
+    @JmsListener(destination = VALIDATE_ORDER_QUEUE)
     public void listen(ValidateOrderRequest event) {
         BeerOrderDto beerOrderDto = event.getBeerOrderDto();
         boolean isValid = beerOrderDto.getBeerOrderLines().stream()
