@@ -9,7 +9,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class MsscBeerServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MsscBeerServiceApplication.class, args);
+        try {
+            SpringApplication.run(MsscBeerServiceApplication.class, args);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
     }
 
 }
