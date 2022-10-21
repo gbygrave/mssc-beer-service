@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Profile("local-discovery")
 @Service
-public class BeerInventoryServiceFeign implements BeerInventoryService {
+public class BeerInventoryServiceFeignImpl implements BeerInventoryService {
 
     private final InventoryServiceFeignClient inventoryServiceFeignClient;
 
