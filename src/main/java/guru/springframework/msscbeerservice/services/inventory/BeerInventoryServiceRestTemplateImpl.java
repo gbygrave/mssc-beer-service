@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Profile("!local-discovery")
 @Slf4j
 @ConfigurationProperties(prefix="sfg.brewery", ignoreUnknownFields=true)
-@Service
+@Component
 public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryService {
 
     private final RestTemplate restTemplate;
