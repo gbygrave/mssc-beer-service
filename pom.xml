@@ -13,6 +13,10 @@
     <name>mssc-beer-service</name>
     <description>mssc-beer-service</description>
 
+    <properties>
+        <docker.image.prefix>gadb2</docker.image.prefix>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
