@@ -46,6 +46,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411
       SPRING_CLOUD_DISCOVERY_ENABLED: true
+    restart: on-failure
   inventory:
     image: gadb2/mssc-beer-inventory-service
     ports:
@@ -64,6 +65,7 @@ services:
       SPRING_ARTEMIS_HOST: jms
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerinventoryservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
+    restart: on-failure
   beer:
     image: gadb2/mssc-beer-service
     ports:
@@ -83,6 +85,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
       SFG_BREWERY_BEERINVENTORYSERVICEHOST: http://inventory:8082
+    restart: on-failure
   order:
     image: gadb2/mssc-beer-order-service
     ports:
@@ -102,8 +105,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerorderservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
       SFG_BREWERY_BEERSERVICEHOST: http://beer:8080
-
-#  testbed:
-#    image: ubuntu:trusty
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
+    restart: on-failure
+  gateway:
+    image: gadb2/mssc-brewery-gateway
+    ports:
+      - '9090:9090'
+    depends_on:
+      - eureka
+      - config
+      - inventory
+      - inventory-failover
+      - beer
+      - order
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      SPRING_PROFILES_ACTIVE: local-discovery
