@@ -1,0 +1,79 @@
+version: '3.8'
+services:
+  filebeat:
+    image: gadb2/filebeat:7.7.0
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro  # See all containers on host from inside filebeat container
+      - /var/run/docker.sock:/var/run/docker.sock:ro                                     # Talk to docker daemon from inside filebeat container
+    extra_hosts:
+      - "elasticsearch:192.168.122.12"
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+  inventory:
+    image: gadb2/mssc-beer-inventory-service
+    ports:
+      - '8082:8082'
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm,secure
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://netflix:eureka@swarm5.anhur:8761/eureka"},"region":"default","registerWithEureka":true},"instance":{"preferIpAddress":false,"hostName":"inventory"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}},"application":{"name":"beer-inventory-service"}},"zipkin":{"baseUrl":"http://swarm4.anhur:9411"}}'
+    restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+    deploy:
+      replicas: 2
+  inventory-failover:
+    image: gadb2/mssc-beer-inventory-failover-service
+    ports:
+      - '8084:8084'
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm,secure
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://netflix:eureka@swarm5.anhur:8761/eureka"},"region":"default","registerWithEureka":true},"instance":{"preferIpAddress":false,"hostName":"inventory-failover"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}},"application":{"name":"beer-inventory-failover-service"}},"zipkin":{"baseUrl":"http://swarm4.anhur:9411"}}'
+    restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+    deploy:
+      replicas: 2
+  beer:
+    image: gadb2/mssc-beer-service
+    ports:
+      - '8080:8080'
+    restart: on-failure
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm,secure
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://netflix:eureka@swarm5.anhur:8761/eureka"},"region":"default","registerWithEureka":true},"instance":{"preferIpAddress":false,"hostName":"beer"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}},"application":{"name":"beer-service"}},"zipkin":{"baseUrl":"http://swarm4.anhur:9411"}}'
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+    deploy:
+      replicas: 2
+  order:
+    image: gadb2/mssc-beer-order-service
+    ports:
+      - '8081:8081'
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm,secure
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://netflix:eureka@swarm5.anhur:8761/eureka"},"region":"default","registerWithEureka":true},"instance":{"preferIpAddress":false,"hostName":"order"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}},"application":{"name":"beer-order-service"}},"zipkin":{"baseUrl":"http://swarm4.anhur:9411"}}'
+    restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+    deploy:
+      replicas: 2
+  gateway:
+    image: gadb2/mssc-brewery-gateway
+    ports:
+      - '9090:9090'
+      - '8999:8999'
+    restart: on-failure
+    environment:
+      SPRING_PROFILES_ACTIVE: swarm,secure
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://netflix:eureka@swarm5.anhur:8761/eureka"},"region":"default","registerWithEureka":true},"instance":{"preferIpAddress":false,"hostName":"gateway"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}},"application":{"name":"brewery-gateway"}},"zipkin":{"baseUrl":"http://swarm4.anhur:9411"}}'
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+    deploy:
+      replicas: 2

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Profile("!local-discovery")
+@Profile("!local-discovery & !swarm")
 @Slf4j
 @ConfigurationProperties(prefix="sfg.brewery", ignoreUnknownFields=true)
 @Component

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
-@Profile("local-discovery")
+@Profile({"local-discovery", "swarm"})
 @Service
 public class BeerInventoryServiceFeignImpl implements BeerInventoryService {
 
