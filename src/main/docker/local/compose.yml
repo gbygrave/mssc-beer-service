@@ -25,6 +25,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
   config:
     image: gadb2/mssc-config-server
     ports:
@@ -35,6 +36,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411
       SPRING_CLOUD_DISCOVERY_ENABLED: true
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
   inventory-failover:
     image: gadb2/mssc-beer-inventory-failover-service
     ports:
@@ -46,6 +48,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411
       SPRING_CLOUD_DISCOVERY_ENABLED: true
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     restart: on-failure
   inventory:
     image: gadb2/mssc-beer-inventory-service
@@ -65,6 +68,7 @@ services:
       SPRING_ARTEMIS_HOST: jms
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerinventoryservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     restart: on-failure
   beer:
     image: gadb2/mssc-beer-service
@@ -85,6 +89,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
       SFG_BREWERY_BEERINVENTORYSERVICEHOST: http://inventory:8082
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     restart: on-failure
   order:
     image: gadb2/mssc-beer-order-service
@@ -105,6 +110,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/beerorderservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_CLOUD_DISCOVERY_ENABLED: true
       SFG_BREWERY_BEERSERVICEHOST: http://beer:8080
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
     restart: on-failure
   gateway:
     image: gadb2/mssc-brewery-gateway
@@ -120,3 +126,4 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_PROFILES_ACTIVE: local-discovery
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
